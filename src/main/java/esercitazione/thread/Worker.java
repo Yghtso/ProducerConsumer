@@ -1,5 +1,7 @@
 package esercitazione.thread;
 
 public abstract class Worker extends Thread {
-    public abstract void run();
+    public void run() {
+        System.out.println("Nuovo Thread creato con ID : " + Thread.currentThread().threadId());
+    }
 }

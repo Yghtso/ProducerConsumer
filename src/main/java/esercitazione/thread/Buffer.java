@@ -2,6 +2,8 @@ package esercitazione.thread;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Buffer<T> {
     private final T[] items;
@@ -21,7 +23,7 @@ public class Buffer<T> {
         this.capacity = capacity;
     }
 
-    public void add(T item) throws InterruptedException {
+    public void add(T item, Producer t) throws InterruptedException {
         lock.lock();
         try {
             while (size == items.length) {
@@ -29,14 +31,14 @@ public class Buffer<T> {
             }
             items[size] = item;
             size++;
-            producerLog(item);
+            producerLog(item, t);
             notEmpty.signal();
         } finally {
             lock.unlock();
         }
     }
 
-    public T extract() throws InterruptedException {
+    public T extract(Consumer t) throws InterruptedException {
         lock.lock();
         try {
             while (size == 0) {
@@ -45,7 +47,7 @@ public class Buffer<T> {
             T item = items[0];
             System.arraycopy(items, 1, items, 0, size - 1);
             items[--size] = null; // Help garbage collection
-            consumerLog(item);
+            consumerLog(item, t);
             notFull.signal();
             return item;
         } finally {
@@ -61,12 +63,17 @@ public class Buffer<T> {
         return capacity;
     }
 
-    private void producerLog(T item) {
-        System.out.println("[PRODUCER] number #[" + Thread.currentThread().getClass().getField(number)
-                + "] produced Product : [" + product.getId()
-                + "] with consumption difficulty : [" + product.getConsumptionDifficulty() + "]");
+    private void producerLog(T item, Producer t) {
+        System.out.println(
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "[PRODUCER] number #[" + t.getNumber()
+                        + "] produced Product : [" + ((Product) item).getId()
+                        + "] with consumption difficulty : [" + ((Product) item).getConsumptionDifficulty() + "]");
     }
 
-    private void consumerLog(T item) {
+    private void consumerLog(T item, Consumer t) {
+        System.out.println(
+                LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "[CONSUMER] number #[" + t.getNumber()
+                        + "] consumed Product : [" + ((Product) item).getId()
+                        + "] with consumption difficulty : [" + ((Product) item).getConsumptionDifficulty() + "]");
     }
 }

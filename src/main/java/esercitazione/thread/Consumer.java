@@ -12,8 +12,7 @@ public class Consumer extends Worker {
             // Si segna per poter estrarre
             Product extractedProduct = null;
             try {
-                extractedProduct = (Product) buffer.extract();
-                log(extractedProduct);
+                extractedProduct = (Product) buffer.extract(this);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -26,12 +25,6 @@ public class Consumer extends Worker {
                 System.out.println(Thread.currentThread().getName() + " was interrupted.");
             }
         }
-    }
-
-    protected void log(Product product) {
-        super.log(product);
-        System.out.println("[CONSUMER] number #[" + number + "] consumed Product : [" + product.getId()
-                + "] with consumption difficulty : [" + product.getConsumptionDifficulty() + "]");
     }
 
 }

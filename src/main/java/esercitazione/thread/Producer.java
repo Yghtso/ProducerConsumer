@@ -14,26 +14,23 @@ public class Producer extends Worker {
 
             Product addItem = new Product(new Random().nextInt(Product.maxConsumptionDifficulty),
                     new Random().nextInt(buffer.getCapacity()));
+            if (addItem.getConsumptionDifficulty() != 0) {
+                try {
+                    buffer.add(addItem, this);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
 
-            try {
-                buffer.add(addItem);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                try {
+                    Thread.sleep(productionRange * 1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    System.out.println(Thread.currentThread().getName() + " was interrupted.");
+                }
+
             }
-
-            try {
-                Thread.sleep(productionRange * 1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                System.out.println(Thread.currentThread().getName() + " was interrupted.");
-            }
-
         }
 
-    }
-
-    protected void log(Product product) {
-        super.log(product);
     }
 
     private int productionRange;

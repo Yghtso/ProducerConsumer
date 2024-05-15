@@ -63,17 +63,22 @@ public class Buffer<T> {
         return capacity;
     }
 
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     private void producerLog(T item, Producer t) {
-        System.out.println(
+        EsercitazioneThread.TextAreaProduttori.append(
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "[PRODUCER] number #[" + t.getNumber()
                         + "] produced Product : [" + ((Product) item).getId()
                         + "] with consumption difficulty : [" + ((Product) item).getConsumptionDifficulty() + "]");
     }
 
     private void consumerLog(T item, Consumer t) {
-        System.out.println(
+        EsercitazioneThread.TextAreaConsumatori.append(
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "[CONSUMER] number #[" + t.getNumber()
                         + "] consumed Product : [" + ((Product) item).getId()
                         + "] with consumption difficulty : [" + ((Product) item).getConsumptionDifficulty() + "]");
     }
+
 }

@@ -1,8 +1,5 @@
 package esercitazione.thread;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 public abstract class Worker extends Thread {
     public void run() {
     }
@@ -22,4 +19,5 @@ public abstract class Worker extends Thread {
     public Buffer getBuffer() {
         return buffer;
     }
+
 }

@@ -11,7 +11,6 @@ public class Producer extends Worker {
     @Override
     public void run() {
         while (Thread.currentThread().isAlive()) {
-
             Product addItem = new Product(new Random().nextInt(Product.maxConsumptionDifficulty),
                     new Random().nextInt(buffer.getCapacity()));
             if (addItem.getConsumptionDifficulty() != 0) {

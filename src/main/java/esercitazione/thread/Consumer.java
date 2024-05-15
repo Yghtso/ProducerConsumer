@@ -26,5 +26,4 @@ public class Consumer extends Worker {
             }
         }
     }
-
 }

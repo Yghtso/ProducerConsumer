@@ -13,7 +13,7 @@ public class EsercitazioneThread {
 
         Product.maxConsumptionDifficulty = maxDiffConsumo;
         ArrayList<Worker> threads = new ArrayList<Worker>();
-        Buffer sharedData = new Buffer(dimensioneBuff);
+        Buffer<Product> sharedData = new Buffer<Product>(dimensioneBuff);
 
         // creo il numero di consumatori che si dovranno avere
         for (int i = 0; i < numProduttori; i++) {

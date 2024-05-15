@@ -9,18 +9,24 @@ public class Consumer extends Worker {
     public void run() {
         while (Thread.currentThread().isAlive()) {
 
-                // Si segna per poter estrarre
-
-                buffer.numThreadExtractAllowed.decrementAndGet();
-
-                if (buffer.numThreadExtractAllowed.get() > 0) {
-                    Product extracted = buffer.extractProduct();
-                    log(extracted);
-                }
+            // Si segna per poter estrarre
+            Product extractedProduct = null;
+            try {
+                extractedProduct = (Product) buffer.extract();
+                log(extractedProduct);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
+
+            try {
+                Thread.sleep(extractedProduct.getConsumptionDifficulty() * 1000); // Sleep for 2000 milliseconds (2
+                                                                                  // seconds)
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println(Thread.currentThread().getName() + " was interrupted.");
+            }
+        }
     }
-
-
 
     protected void log(Product product) {
         super.log(product);

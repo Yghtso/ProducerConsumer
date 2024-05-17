@@ -5,8 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class Buffer<T> {
-    private final T[] items;
+public class Buffer {
+    private final Product[] items;
     private int size;
     private final ReentrantLock lock;
     private final Condition notFull;
@@ -15,7 +15,7 @@ public class Buffer<T> {
 
     @SuppressWarnings("unchecked")
     public Buffer(int capacity) {
-        items = (T[]) new Object[capacity];
+        items = new Product[capacity];
         size = 0;
         lock = new ReentrantLock();
         notFull = lock.newCondition();
@@ -23,7 +23,7 @@ public class Buffer<T> {
         this.capacity = capacity;
     }
 
-    public void add(T item, Producer t) throws InterruptedException {
+    public void add(Product item, Producer t) throws InterruptedException {
         lock.lock();
         try {
             while (size == items.length) {
@@ -38,13 +38,13 @@ public class Buffer<T> {
         }
     }
 
-    public T extract(Consumer t) throws InterruptedException {
+    public Product extract(Consumer t) throws InterruptedException {
         lock.lock();
         try {
             while (size == 0) {
                 notEmpty.await();
             }
-            T item = items[0];
+            Product item = items[0];
             System.arraycopy(items, 1, items, 0, size - 1);
             items[--size] = null; // Help garbage collection
             consumerLog(item, t);
@@ -67,18 +67,18 @@ public class Buffer<T> {
         this.size = size;
     }
 
-    private void producerLog(T item, Producer t) {
+    private void producerLog(Product item, Producer t) {
         EsercitazioneThread.TextAreaProduttori.append(
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "[PRODUCER] number #[" + t.getNumber()
-                        + "] produced Product : [" + ((Product) item).getId()
-                        + "] with consumption difficulty : [" + ((Product) item).getConsumptionDifficulty() + "]");
+                        + "] produced Product : [" + item.getId()
+                        + "] with consumption difficulty : [" + item.getConsumptionDifficulty() + "]\n");
     }
 
-    private void consumerLog(T item, Consumer t) {
+    private void consumerLog(Product item, Consumer t) {
         EsercitazioneThread.TextAreaConsumatori.append(
                 LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "[CONSUMER] number #[" + t.getNumber()
-                        + "] consumed Product : [" + ((Product) item).getId()
-                        + "] with consumption difficulty : [" + ((Product) item).getConsumptionDifficulty() + "]");
+                        + "] consumed Product : [" + item.getId()
+                        + "] with consumption difficulty : [" + item.getConsumptionDifficulty() + "]\n");
     }
 
 }

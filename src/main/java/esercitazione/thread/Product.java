@@ -1,12 +1,13 @@
 package esercitazione.thread;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Product {
 
-    public Product(int consumptionDifficulty, int maxId) {
-        this.consumptionDifficulty = consumptionDifficulty;
-        id = new Random().nextInt(maxId) + 1;
+    public Product(int maxId) {
+        consumptionDifficulty = ThreadLocalRandom.current().nextInt(maxConsumptionDifficulty);
+        id = ThreadLocalRandom.current().nextInt(maxId);
     }
 
     public int getConsumptionDifficulty() {

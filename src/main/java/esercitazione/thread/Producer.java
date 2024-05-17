@@ -1,5 +1,7 @@
 package esercitazione.thread;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import java.util.Random;
 
 public class Producer extends Worker {
@@ -11,8 +13,7 @@ public class Producer extends Worker {
     @Override
     public void run() {
         while (Thread.currentThread().isAlive()) {
-            Product addItem = new Product(new Random().nextInt(Product.maxConsumptionDifficulty),
-                    new Random().nextInt(buffer.getCapacity()));
+            Product addItem = new Product(buffer.getCapacity());
             if (addItem.getConsumptionDifficulty() != 0) {
                 try {
                     buffer.add(addItem, this);

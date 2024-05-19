@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Product {
 
     public Product(int maxId) {
-        consumptionDifficulty = ThreadLocalRandom.current().nextInt(maxConsumptionDifficulty);
+        consumptionDifficulty = ThreadLocalRandom.current().nextInt(maxConsumptionDifficulty + 1);
         id = ThreadLocalRandom.current().nextInt(maxId);
     }
 

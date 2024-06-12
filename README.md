@@ -6,7 +6,7 @@ Simulazione scenario produttore consumatore thread safe con buffer condiviso
 
 2. Scarica la repository
  
->git clone url_della_repo
+>git clone url_della_repo  
  OPPURE
 la zip dal sito
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Ale
+ * 
  */
 public class EsercitazioneThread extends javax.swing.JFrame {
 
